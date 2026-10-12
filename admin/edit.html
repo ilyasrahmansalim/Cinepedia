@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Movie - Cinepedia Admin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <header class="navbar">
+      <div class="nav-left">
+        <div class="logo">
+          <span class="logo-icon">C</span>
+          <span class="logo-text">CINEPEDIA</span>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <!-- Dropdown User Profile -->
+        <div class="user-dropdown">
+          <button type="button" class="user-profile-btn" id="userDropdownBtn">
+            <span class="avatar">AD</span>
+            <span class="user-name">Admin User</span>
+            <span class="dropdown-arrow">&#9660;</span>
+          </button>
+
+          <div class="dropdown-menu" id="userDropdownMenu">
+            <div class="dropdown-header">
+              <div class="dropdown-avatar">AD</div>
+              <div class="dropdown-user-info">
+                <span class="dropdown-name">Admin User</span>
+                <span class="dropdown-email">admin@cinepedia.com</span>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="logout.php" class="dropdown-item logout-item">
+              <span class="item-icon">&#128682;</span> Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+
+        <!-- Breadcrumb / Back Link -->
+        <div class="page-header">
+            <a href="index.html" class="back-link">
+                &#129120; Back to Movie Database
+            </a>
+        </div>
+
+        <!-- Edit Movie Card -->
+        <section class="card">
+            <div class="card-header border-bottom">
+                <div class="card-title">
+                    <span class="icon">&#9998;</span> EDIT MOVIE DETAILS
+                </div>
+                <div class="card-subtitle">ID: #<?= isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '1' ?></div>
+            </div>
+
+            <!-- Form Edit -->
+            <form action="process_edit.php" method="POST" style="padding-top: 16px;">
+                <!-- Hidden Input untuk menyimpan ID film -->
+                <input type="hidden" name="id" value="<?= isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '1' ?>">
+
+                <div class="poster-preview-wrapper">
+                    <!-- Preview Poster Saat Ini -->
+                    <img src="https://image.tmdb.org/t/p/w500/1pdfLPoL3VFiS9S2f3239Y3fR7m.jpg" alt="Poster Preview" class="poster-preview" id="posterPreview">
+
+                    <!-- Grid Form Field -->
+                    <div class="form-grid" style="flex: 1;">
+                        <div class="form-group full-width">
+                            <label>MOVIE TITLE</label>
+                            <input type="text" name="title" value="Dune: Part Two" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>GENRE</label>
+                            <select name="genre" required>
+                                <option value="Sci-Fi" selected>Sci-Fi</option>
+                                <option value="Biography">Biography</option>
+                                <option value="Crime">Crime</option>
+                                <option value="Action">Action</option>
+                                <option value="Drama">Drama</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>RATING</label>
+                            <input type="text" name="rating" value="8.8" placeholder="e.g. 8.5" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>COVER IMAGE URL (POSTER)</label>
+                            <input type="url" name="poster" id="editPosterInput" value="https://image.tmdb.org/t/p/w500/1pdfLPoL3VFiS9S2f3239Y3fR7m.jpg" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>YOUTUBE TRAILER URL</label>
+                            <input type="url" name="trailer" value="https://youtube.com/watch?v=Way9Dexny3w" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Action Buttons -->
+                <div class="form-actions">
+                    <a href="index.html" class="btn btn-secondary">CANCEL</a>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="save-icon">&#128190;</span> UPDATE MOVIE
+                    </button>
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="global-footer">
+        <span><strong>CINEPEDIA</strong> &bull; Content Management Interface</span>
+        <span>&copy; 2025 Cinepedia Media. All rights reserved.</span>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Live Preview Poster pada Halaman Edit
+        const posterInput = document.getElementById('editPosterInput');
+        const posterPreview = document.getElementById('posterPreview');
+
+        if (posterInput && posterPreview) {
+            posterInput.addEventListener('input', (e) => {
+                posterPreview.src = e.target.value || 'https://via.placeholder.com/110x160/121212/ffffff?text=No+Poster';
+            });
+        }
+    </script>
+</body>
+
+</html>

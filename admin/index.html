@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinepedia - Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <header class="navbar">
+      <div class="nav-left">
+        <div class="logo">
+          <span class="logo-icon">C</span>
+          <span class="logo-text">CINEPEDIA</span>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <!-- Dropdown User Profile -->
+        <div class="user-dropdown">
+          <button type="button" class="user-profile-btn" id="userDropdownBtn">
+            <span class="avatar">AD</span>
+            <span class="user-name">Admin User</span>
+            <span class="dropdown-arrow">&#9660;</span>
+          </button>
+
+          <!-- Dropdown Menu Content -->
+          <div class="dropdown-menu" id="userDropdownMenu">
+            <div class="dropdown-header">
+              <div class="dropdown-avatar">AD</div>
+              <div class="dropdown-user-info">
+                <span class="dropdown-name">Admin User</span>
+                <span class="dropdown-email">admin@cinepedia.com</span>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="logout.php" class="dropdown-item logout-item">
+              <span class="item-icon">&#128682;</span> Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+
+        <!-- Add New Movie Section -->
+        <section class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="icon">&#127916;</span> ADD NEW MOVIE
+                </div>
+            </div>
+            <!-- Form Create (Arahkan ke file proses PHP milik Anda) -->
+            <form action="process_add.php" method="POST" id="addMovieForm" class="form-row">
+                <div class="form-group">
+                    <label>MOVIE TITLE</label>
+                    <input type="text" name="title" id="movieTitle" placeholder="e.g. Blade Runner 2049" required>
+                </div>
+                <div class="form-group flex-genre">
+                    <label>GENRE</label>
+                    <select name="genre" id="movieGenre" required>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Biography">Biography</option>
+                        <option value="Crime">Crime</option>
+                        <option value="Action">Action</option>
+                        <option value="Drama">Drama</option>
+                    </select>
+                </div>
+                <div class="form-group flex-url">
+                    <label>COVER IMAGE URL (POSTER)</label>
+                    <input type="url" name="poster" id="moviePoster" placeholder="https://.../poster.jpg" required>
+                </div>
+                <div class="form-group flex-url">
+                    <label>YOUTUBE TRAILER URL</label>
+                    <input type="url" name="trailer" id="movieTrailer" placeholder="https://youtube.com/watch?v=..." required>
+                </div>
+                <div class="form-group flex-btn">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="save-icon">&#128190;</span> ADD
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Movie Database Section -->
+        <section class="card">
+            <div class="card-header border-bottom">
+                <div class="title-with-badge">
+                    <h2>MOVIE DATABASE</h2>
+                    <span class="badge-count" id="movieCount">4 TITLES</span>
+                </div>
+                <div class="search-box">
+                    <span class="search-icon">&#128065;</span>
+                    <input type="text" id="searchInput" placeholder="Filter title or genre...">
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>POSTER</th>
+                            <th>TITLE</th>
+                            <th>GENRE</th>
+                            <th>RATING</th>
+                            <th>YOUTUBE TRAILER LINK</th>
+                            <th class="text-right">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="movieTableBody">
+                        <!-- Contoh Baris Data (Nanti akan di-looping menggunakan PHP) -->
+                        <tr>
+                            <td>
+                                <img src="https://image.tmdb.org/t/p/w500/1pdfLPoL3VFiS9S2f3239Y3fR7m.jpg" alt="Dune" class="poster-img">
+                            </td>
+                            <td>
+                                <div class="movie-info">
+                                    <div class="movie-title">Dune: Part Two</div>
+                                    <div class="movie-meta">2024 &bull; 166 min</div>
+                                </div>
+                            </td>
+                            <td><span class="genre-tag">SCI-FI</span></td>
+                            <td><span class="rating-tag">&#9733; 8.8</span></td>
+                            <td>
+                                <a href="https://youtube.com/watch?v=Way9Dexny3w" target="_blank" class="btn-trailer">
+                                    <span class="play-icon">&#9654;</span> Watch Trailer
+                                </a>
+                            </td>
+                            <td class="text-right">
+                                <div class="action-btns">
+                                    <!-- Button Edit mengarah ke edit.php?id=... -->
+                                    <a href="edit.php?id=1" class="btn btn-secondary btn-sm">EDIT</a>
+                                    <!-- Button Delete mengarah ke proses hapus PHP -->
+                                    <a href="process_delete.php?id=1" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus film ini?')">DELETE</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Card Footer -->
+            <div class="card-footer">
+                <span>Cinepedia Catalog Manager</span>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="global-footer">
+        <span><strong>CINEPEDIA</strong> &bull; Content Management Interface</span>
+        <span>&copy; 2025 Cinepedia Media. All rights reserved.</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
