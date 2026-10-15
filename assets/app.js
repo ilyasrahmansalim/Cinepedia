@@ -1,50 +1,57 @@
-// JS seperlunya saja — semua logika data ada di PHP.
-document.addEventListener("DOMContentLoaded", () => {
-  // 1. Dropdown profil (buka/tutup, tutup saat klik di luar atau tekan Esc)
-  const dropdown = document.querySelector(".user-dropdown");
-  const toggle = dropdown && dropdown.querySelector("[data-dropdown]");
-  if (toggle) {
-    toggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      dropdown.classList.toggle("open");
-    });
-    document.addEventListener("click", (e) => {
-      if (!dropdown.contains(e.target)) dropdown.classList.remove("open");
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") dropdown.classList.remove("open");
-    });
+// Dropdown profil di navbar:
+// klik tombol profil untuk buka/tutup, klik di tempat lain untuk menutup.
+const profileBtn = document.getElementById("profileBtn");
+const userDropdown = document.getElementById("userDropdown");
+
+if (profileBtn) {
+  profileBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    userDropdown.classList.toggle("open");
+  });
+
+  document.addEventListener("click", function () {
+    userDropdown.classList.remove("open");
+  });
+}
+
+// Carousel di halaman katalog:
+// geser otomatis tiap 5 detik, berhenti saat kursor di atasnya / disentuh,
+// bisa pakai tombol panah, titik, atau di-swipe di HP.
+const carouselTrack = document.getElementById("carouselTrack");
+
+if (carouselTrack && carouselTrack.children.length > 1) {
+  const total = carouselTrack.children.length;
+  const dots = document.querySelectorAll(".carousel-dot");
+  let index = 0;
+  let timer = null;
+
+  function goTo(i) {
+    index = (i + total) % total; // setelah slide terakhir kembali ke pertama
+    carouselTrack.scrollTo({ left: index * carouselTrack.clientWidth, behavior: "smooth" });
   }
 
-  // 2. Konfirmasi sebelum submit form yang punya data-confirm (hapus film)
-  document.querySelectorAll("form[data-confirm]").forEach((form) => {
-    form.addEventListener("submit", (e) => {
-      if (!confirm(form.dataset.confirm)) e.preventDefault();
+  // Perbarui titik aktif setiap track bergeser (termasuk saat di-swipe)
+  carouselTrack.addEventListener("scroll", function () {
+    index = Math.round(carouselTrack.scrollLeft / carouselTrack.clientWidth);
+    dots.forEach(function (dot, n) {
+      dot.classList.toggle("active", n === index);
     });
   });
 
-  // 3. Poster gagal dimuat -> tampilkan latar gradien pengganti
-  document.querySelectorAll("img.poster").forEach((img) => {
-    const fail = () => img.closest(".poster-wrap").classList.add("no-poster");
-    if (img.complete && img.naturalWidth === 0) fail();
-    img.addEventListener("error", fail);
+  document.getElementById("carouselPrev").addEventListener("click", function () { goTo(index - 1); });
+  document.getElementById("carouselNext").addEventListener("click", function () { goTo(index + 1); });
+  dots.forEach(function (dot, n) {
+    dot.addEventListener("click", function () { goTo(n); });
   });
 
-  // 4. Preview poster langsung saat URL diubah (form edit admin)
-  const posterInput = document.querySelector("[data-poster-input]");
-  const preview = document.querySelector(".preview");
-  if (posterInput && preview) {
-    posterInput.addEventListener("input", () => {
-      let img = preview.querySelector("img");
-      if (!img) {
-        img = document.createElement("img");
-        img.className = "poster";
-        img.alt = "Preview poster";
-        preview.appendChild(img);
-      }
-      preview.classList.remove("no-poster");
-      img.onerror = () => preview.classList.add("no-poster");
-      img.src = posterInput.value.trim();
-    });
-  }
-});
+  function start() { timer = setInterval(function () { goTo(index + 1); }, 5000); }
+  function stop()  { clearInterval(timer); }
+
+  const carousel = document.getElementById("carousel");
+  carousel.addEventListener("mouseenter", stop);
+  carousel.addEventListener("mouseleave", start);
+  carousel.addEventListener("touchstart", stop, { passive: true });
+  carousel.addEventListener("touchend", start);
+
+  start();
+}
